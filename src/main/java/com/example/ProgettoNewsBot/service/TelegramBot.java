@@ -7,7 +7,11 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -17,6 +21,11 @@ public class  TelegramBot extends TelegramLongPollingBot {
 
     public TelegramBot(BotConfig config){
         this.config = config;
+        List<BotCommand> listofCommand = new ArrayList<>();
+        listofCommand.add(new BotCommand("/start","get a welcome message"));
+        listofCommand.add(new BotCommand("/mydata","get your data store"));
+        listofCommand.add(new BotCommand("/deletedata","delete my data"));
+        listofCommand.add(new BotCommand("/help","info how to use this bot"));
     }
 
     @Override
