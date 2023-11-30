@@ -51,7 +51,7 @@ public class  TelegramBot extends TelegramLongPollingBot {
     }
     private void startCommandReceived(long chatId, String name){
 
-        String answer = "Hi,"+name +", nice to meet you!";
+        String answer = "Привет,"+name +"!Добро пожаловать в Progetto - твое креативное пространство в мире дизайна! \uD83C\uDFA8✨ Я здесь, чтобы помочь тебе быть в курсе последних новостей, делиться шрифтами, текстурами и 3D-моделями, а также вдохновляться статьями от талантливых дизайнеров. Готов к творчеству? \uD83D\uDCA1✏\uFE0F\"";
         log.info("Replied to user "+name);
 
 
