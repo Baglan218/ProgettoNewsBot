@@ -5,9 +5,11 @@ import com.example.ProgettoNewsBot.config.BotConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
+import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
@@ -19,13 +21,26 @@ public class  TelegramBot extends TelegramLongPollingBot {
 
     final BotConfig config;
 
+    static final String  HELP_TEXT = "This bot is created to demontration";
+
     public TelegramBot(BotConfig config){
         this.config = config;
         List<BotCommand> listofCommand = new ArrayList<>();
-        listofCommand.add(new BotCommand("/start","get a welcome message"));
-        listofCommand.add(new BotCommand("/mydata","get your data store"));
-        listofCommand.add(new BotCommand("/deletedata","delete my data"));
-        listofCommand.add(new BotCommand("/help","info how to use this bot"));
+        listofCommand.add(new BotCommand("/start","Начать взаимодействие с ботом"));
+        listofCommand.add(new BotCommand("/mydata","Получить информацию о вашем профиле"));
+        listofCommand.add(new BotCommand("/deletedata","Удалить ваши личные данные"));
+        listofCommand.add(new BotCommand("/help","Показать это сообщение справки"));
+        listofCommand.add(new BotCommand("/developer","Получить информацию о разработчик"));
+        listofCommand.add(new BotCommand("/contact","Связаться с нами"));
+        try{
+            this .execute(new SetMyCommands(listofCommand, new BotCommandScopeDefault(),null));
+        }
+        catch(TelegramApiException e){
+            log.error("Error setting bot's command list: "+ e.getMessage());
+
+        }
+
+
     }
 
     @Override
@@ -52,7 +67,11 @@ public class  TelegramBot extends TelegramLongPollingBot {
                 case "/start":
                     startCommandReceived(chatId,update.getMessage().getChat().getFirstName());
                 break;
-                    default:sendMessage(chatId,"Sorry,command was not recognize");
+                case "/help":
+                    sendMessage(chatId, HELP_TEXT);
+                    break;
+
+                    default:sendMessage(chatId,"Извините, эта команда не распознана. Если у вас есть вопросы или вам нужна помощь, воспользуйтесь командой /help или свяжитесь с нашей поддержкой через /contact.\n");
             }
         }
 
